@@ -2,11 +2,11 @@ div.Content {
   margin: -800px 3em 3em auto;
 }
 
-div.Content section h3 {
+div.Content section h2 {
   font-size: 30px;
 }
 
-div.Content section p {
+div.Content p {
   margin-left: 1em;
   font-size: 18px;
 }
