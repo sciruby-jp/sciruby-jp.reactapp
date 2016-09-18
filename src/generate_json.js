@@ -20,7 +20,7 @@ function crawl_stargazers_count(github_url) {
   const response = request('GET', api_url, {
     headers: { 'User-Agent': 'sciruby-jp.github.io' }
   });
-  console.log(response.getBody().toString());
+
   return JSON.parse(response.getBody().toString()).stargazers_count;
 }
 
