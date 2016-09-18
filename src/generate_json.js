@@ -136,14 +136,14 @@ const biggerCircleRadius = biggerCircleRadiusRate * base_size;
     const library = libraries.find((lib) => {
       return (lib.name === node.data.name)
     });
+
     node.data['stargazers_count'] = fetchStarConut(library.github);
-    if (node.data['stargazers_count'] > 3000) {
-      const a = node.data['stargazers_count'] - 3000;
-      node.data['stargazers_count'] = 3000 + a / 3;
-    } else if (node.data['stargazers_count'] <= 3000) {
-      const a = 3000 - node.data['stargazers_count'];
-      node.data['stargazers_count'] += a / 4;
+    if (node.data['stargazers_count'] > 2000) {
+      node.data['stargazers_count'] = 2000 + (node.data['stargazers_count'] - 2000) / 3;
+    } else if (node.data['stargazers_count'] <= 2000) {
+      node.data['stargazers_count'] += (2000 - node.data['stargazers_count']) / 4;
     }
+
     node.data['github_url'] = library.github;
 
     console.log(node);
