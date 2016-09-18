@@ -8,7 +8,7 @@ function rotate(x, y, rad) {
   return { x: x1, y: y1 };
 }
 
-function crawl_stargazers_count(github_url) {
+function fetchStarConut(github_url) {
   const request = require('sync-request');
 
   const username = process.argv[2];
@@ -25,14 +25,14 @@ function crawl_stargazers_count(github_url) {
 }
 
 // library group rendered at center of the circle
-const central_group = "computing";
+const centralGroup = 'computing';
 
 // groups of libraries
 let all_groups = ["python", "ruby"].map((lang) => {
     return graph[`${lang}_libraries`];
   })
-  .reduce((first_libs, second_libs) => {
-    return first_libs.concat(second_libs);
+  .reduce((firstLibs, secondLibs) => {
+    return firstLibs.concat(secondLibs);
   })
   .map((lib) => {
     return lib.group;
@@ -42,35 +42,35 @@ let all_groups = ["python", "ruby"].map((lang) => {
   });
 all_groups = Array.from(new Set(all_groups));
 
-// library groups except central_group
+// library groups except centralGroup
 const groups = all_groups.filter((group_name) => {
-  return (group_name !== central_group);
+  return (group_name !== centralGroup);
 });
 
 // radius of each nodes, and radius of the whole circle
-const base_size = 80;
-const group_circle_radius_rate = 1;
-const big_circle_radius_rate = 3;
-const group_circle_radius = group_circle_radius_rate * base_size;
-const big_circle_radius = big_circle_radius_rate * base_size;
+const base_size = 70;
+const groupCircleRadiusRate = 1;
+const biggerCircleRadiusRate   = 3;
+const groupCircleRadius = groupCircleRadiusRate * base_size;
+const biggerCircleRadius = biggerCircleRadiusRate * base_size;
 
-["python", "ruby"].map((lang) => {
+['python', 'ruby'].map((lang) => {
   const libraries = graph[`${lang}_libraries`];
   const edges = graph[`${lang}_edges`];
   let hash = {
-    "elements": {
-      "nodes": [],
-      "edges": []
+    elements: {
+      nodes: [],
+      edges: []
     }
   };
 
   const central_nodes = libraries
     .filter((lib) => {
-      return (lib.group === central_group);
+      return (lib.group === centralGroup);
     })
     .map((lib, index, arr) => {
       const rad = (index / arr.length) * Math.PI * 2;
-      const position = rotate(0, group_circle_radius, rad);
+      const position = rotate(0, groupCircleRadius, rad);
       return { lib, position };
     }).map(({ lib, position }) => {
       return {
@@ -86,15 +86,15 @@ const big_circle_radius = big_circle_radius_rate * base_size;
   hash.elements.nodes = hash.elements.nodes.concat(central_nodes);
 
   // merginal groups
-  groups.map((group, group_index, group_arr) => {
-    let group_libs = libraries.filter((lib) => {
+  groups.map((group, groupIndex, groupArr) => {
+    let groupLibs = libraries.filter((lib) => {
       return lib.group === group
     });
 
-    group_libs = group_libs.map((lib, index, arr) => {
+    groupLibs = groupLibs.map((lib, index, arr) => {
       // circle layout at center
       const rad = (index / arr.length) * Math.PI * 2;
-      const position = rotate(0, group_circle_radius, rad);
+      const position = rotate(0, groupCircleRadius, rad);
       return { lib, position };
     }).map(({
       lib,
@@ -104,19 +104,19 @@ const big_circle_radius = big_circle_radius_rate * base_size;
       }
     }) => {
       // parallel shift
-      const position = { x, y: y + big_circle_radius };
+      const position = { x, y: y + biggerCircleRadius };
       return { lib, position };
     }).map(({
       lib,
       position: { x, y }
     }) => {
       // rotate
-      const rad = (group_index / group_arr.length) * Math.PI * 2;
+      const rad = (groupIndex / groupArr.length) * Math.PI * 2;
       const position = rotate(x, y, rad);
       return { lib, position };
     });
 
-    hash.elements.nodes = hash.elements.nodes.concat(group_libs.map(({
+    hash.elements.nodes = hash.elements.nodes.concat(groupLibs.map(({
       lib,
       position
     }) => {
@@ -136,8 +136,16 @@ const big_circle_radius = big_circle_radius_rate * base_size;
     const library = libraries.find((lib) => {
       return (lib.name === node.data.name)
     });
-    node.data["stargazers_count"] = crawl_stargazers_count(library.github);
-    node.data["github_url"] = library.github;
+    node.data['stargazers_count'] = fetchStarConut(library.github);
+    if (node.data['stargazers_count'] > 3000) {
+      const a = node.data['stargazers_count'] - 3000;
+      node.data['stargazers_count'] = 3000 + a / 3;
+    } else if (node.data['stargazers_count'] <= 3000) {
+      const a = 3000 - node.data['stargazers_count'];
+      node.data['stargazers_count'] += a / 4;
+    }
+    node.data['github_url'] = library.github;
+
     console.log(node);
     return node;
   });
@@ -155,7 +163,7 @@ const big_circle_radius = big_circle_radius_rate * base_size;
       group = source.data.group;
     }
 
-    const ret_hash = {
+    const retHash = {
       data: {
         id: `${edge.source}_${edge.target}`,
         source: edge.source,
@@ -164,10 +172,10 @@ const big_circle_radius = big_circle_radius_rate * base_size;
     };
 
     if (group !== null) {
-      ret_hash.data["group"] = group;
+      retHash.data['group'] = group;
     }
 
-    return ret_hash;
+    return retHash;
   });
 
   fs.writeFileSync(`./src/${lang}.json`, JSON.stringify(hash), 'utf-8');
