@@ -10,3 +10,7 @@ div.Content p {
   margin-left: 1em;
   font-size: 18px;
 }
+
+div.Content ul {
+  font-size: 18px;
+}
