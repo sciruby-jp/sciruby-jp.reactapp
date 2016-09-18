@@ -6,7 +6,6 @@ class Content extends Component {
   render() {
     return (
       <div className="Content">
-        <img src={this.props.imgUrl} ref="img" />
         <section>
           <h3>SciRubyとは</h3>
           <p>

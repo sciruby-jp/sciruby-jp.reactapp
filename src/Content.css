@@ -3,13 +3,6 @@ div.Content {
   margin: -800px 3em 3em auto;
 }
 
-div.Content img {
-  width: 200px;
-  position: fixed;
-  right: 15em;
-  bottom: 15em;
-}
-
 div.Content section h3 {
   font-size: 30px;
 }
