@@ -5,7 +5,7 @@ import './Content.css';
 class Content extends Component {
   render() {
     return (
-      <div className="Content">
+      <div style={{ width: window.innerWidth - 750 }} className="Content">
         <ReactMarkdown source={require('raw!./contents.md')} />
       </div>
     );

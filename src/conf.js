@@ -28,5 +28,5 @@ const style = cytoscape.stylesheet()
 export let conf = {
   style: style,
   zoomingEnabled: false,
-  pan: { x: 400, y: 350 },
+  pan: { x: 350, y: 350 },
 };
