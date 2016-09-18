@@ -24,7 +24,7 @@ class App extends Component {
 
   handleScroll = (e) => {
     const scroll = e.srcElement.body.scrollTop;
-    const json = (scroll <= 500) ? rubyJson : pythonJson;
+    const json = (scroll <= 1000) ? rubyJson : pythonJson;
 
     this.setState({ json: json })
   }
