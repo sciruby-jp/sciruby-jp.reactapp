@@ -14,8 +14,7 @@ class Graph extends Component{
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.json.elements.nodes.length == nextProps.json.elements.nodes.length
-     && this.props.json.elements.edges.length == nextProps.json.elements.edges.length) return;
+    if (this.props.json.elements.nodes[0].data.id == nextProps.json.elements.nodes[0].data.id) return;
 
     var elem = ReactDOM.findDOMNode(this);
     window.requestAnimationFrame(function() {

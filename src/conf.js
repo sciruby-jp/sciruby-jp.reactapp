@@ -1,8 +1,11 @@
 import cytoscape from 'cytoscape';
 
-const colors = [
-  '#34495e', '#c0392b', '#f39c12', '#2980b9', '#2ecc71', '#f1c40f'
-]
+const colors = ['#c0392b', '#34495e', '#f1c40f', '#16a085', '#2980b9', '#8e44ad']
+
+const groupToColor = (group) => {
+  return (group !== undefined) ? colors[group] : '#ddd';
+}
+
 const style = cytoscape.stylesheet()
   .selector('node')
     .css({
@@ -27,11 +30,3 @@ export let conf = {
   zoomingEnabled: false,
   pan: { x: 400, y: 350 },
 };
-
-function groupToColor (group) {
-  if (group !== undefined) {
-    return colors[group]
-  } else {
-    return '#ddd'
-  }
-}
